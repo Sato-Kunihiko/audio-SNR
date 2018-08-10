@@ -1,4 +1,4 @@
-## Mixing an audio file with a noise file at specific Signal-to-Noise Ratio.
+# Mixing an audio file with a noise file at specific Signal-to-Noise Ratio
 
 ## Installation
 - Python3.5
