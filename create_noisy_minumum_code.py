@@ -17,15 +17,15 @@ def get_args():
     args = parser.parse_args()
     return args
 
+def cal_adjusted_rms(clean_rms, snr):
+    a = float(snr) / 20
+    noise_rms = clean_rms / (10**a) 
+    return noise_rms
+
 def cal_amp(wf):
     buffer = wf.readframes(wf.getnframes())
     amptitude = (np.frombuffer(buffer, dtype="int16")).astype(np.float64)
     return amptitude
-
-def cal_db(clean_rms, snr):
-    a = float(snr) / 20
-    noise_rms = clean_rms / (10**a) 
-    return noise_rms
 
 def cal_rms(amp):
     return np.sqrt(np.mean(np.square(amp), axis=-1))
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     split_noise_amp = noise_amp[start: start + len(clean_amp)]
     noise_rms = cal_rms(split_noise_amp)
 
-    adjusted_noise_rms = cal_db(clean_rms, snr)
+    adjusted_noise_rms = cal_adjusted_rms(clean_rms, snr)
     
     adjusted_noise_amp = split_noise_amp * (adjusted_noise_rms / noise_rms) 
     mixed_amp = (clean_amp + adjusted_noise_amp)
