@@ -18,3 +18,7 @@ Example: `python3 create_noisy_minumum_code.py --clean_file ~/Desktop/test_sourc
 ## Dataset
 - [Voices](http://festvox.org/cmu_arctic/)
 - [Noises](https://zenodo.org/record/1227121#.W2wUVNj7TUI)
+
+## Detail
+There is the detail on my pose (Japanese).
+https://engineering.linecorp.com/ja/blog/voice-waveform-arbitrary-signal-to-noise-ratio-python/
