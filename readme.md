@@ -20,6 +20,10 @@ Example: `python3 create_noisy_minumum_code.py --clean_file ~/Desktop/test_sourc
 - [Noises](https://zenodo.org/record/1227121#.W2wUVNj7TUI)
 
 ## Detail
-There is the detail on my post (Japanese).
+There is the detail on my post (in Japanese).
 
 https://engineering.linecorp.com/ja/blog/voice-waveform-arbitrary-signal-to-noise-ratio-python/
+
+There is the detail on my post (in Korean).
+
+https://engineering.linecorp.com/ko/blog/voice-waveform-arbitrary-signal-to-noise-ratio-python/
