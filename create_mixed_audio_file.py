@@ -24,6 +24,7 @@ def cal_adjusted_rms(clean_rms, snr):
 
 def cal_amp(wf):
     buffer = wf.readframes(wf.getnframes())
+    # The dtype depends on the value of pulse-code modulation. The int16 is set for 16-bit PCM.
     amptitude = (np.frombuffer(buffer, dtype="int16")).astype(np.float64)
     return amptitude
 
