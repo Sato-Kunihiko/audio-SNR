@@ -59,9 +59,11 @@ if __name__ == '__main__':
     adjusted_noise_amp = split_noise_amp * (adjusted_noise_rms / noise_rms) 
     mixed_amp = (clean_amp + adjusted_noise_amp)
 
-    if (mixed_amp.max(axis=0) > 32767): 
-        mixed_amp = mixed_amp * (32767/mixed_amp.max(axis=0))
-        clean_amp = clean_amp * (32767/mixed_amp.max(axis=0))
-        adjusted_noise_amp = adjusted_noise_amp * (32767/mixed_amp.max(axis=0))
+    max_int16 = np.iinfo(np.int16).max 
+    if  mixed_amp.max(axis=0) > max_int16:
+        reduction_rate = max_int16 / mixed_amp.max(axis=0)
+        mixed_amp = mixed_amp * (reduction_rate)
+        clean_amp = clean_amp * (reduction_rate)
+        adjusted_noise_amp = adjusted_noise_amp * (reduction_rate)
 
     save_waveform(args.output_mixed_file, clean_wav.getparams(), mixed_amp)
