@@ -12,7 +12,7 @@ def get_args():
     parser.add_argument('--noise_file', type=str, required=True)
     parser.add_argument('--output_clean_file', type=str, default='')
     parser.add_argument('--output_noise_file', type=str, default='')
-    parser.add_argument('--output_noisy_file', type=str, default='', required=True)
+    parser.add_argument('--output_mixed_file', type=str, default='', required=True)
     parser.add_argument('--snr', type=float, default='', required=True)
     args = parser.parse_args()
     return args
@@ -64,6 +64,4 @@ if __name__ == '__main__':
         clean_amp = clean_amp * (32767/mixed_amp.max(axis=0))
         adjusted_noise_amp = adjusted_noise_amp * (32767/mixed_amp.max(axis=0))
 
-    save_waveform(args.output_noisy_file, clean_wav.getparams(), mixed_amp)
-    # save_waveform(args.output_clean_file, clean_wav, clean_amp)
-    # save_waveform(args.output_noise_file, clean_wav, noise_amp)
+    save_waveform(args.output_mixed_file, clean_wav.getparams(), mixed_amp)
