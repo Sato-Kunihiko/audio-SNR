@@ -30,6 +30,12 @@ def cal_amp(wf):
 def cal_rms(amp):
     return np.sqrt(np.mean(np.square(amp), axis=-1))
 
+def save_waveform(output_path, params, amp):
+    output_file = wave.Wave_write(output_path)
+    output_file.setparams(params)
+    output_file.writeframes(array.array('h', amp.astype(np.int16)).tobytes() )
+    output_file.close()
+
 if __name__ == '__main__':
     args = get_args()
 
@@ -58,17 +64,6 @@ if __name__ == '__main__':
         clean_amp = clean_amp * (32767/mixed_amp.max(axis=0))
         adjusted_noise_amp = adjusted_noise_amp * (32767/mixed_amp.max(axis=0))
 
-    noisy_wave = wave.Wave_write(args.output_noisy_file)
-    noisy_wave.setparams(clean_wav.getparams())
-    noisy_wave.writeframes(array.array('h', mixed_amp.astype(np.int16)).tostring() )
-    noisy_wave.close()
-
-    clean_wave = wave.Wave_write(args.output_clean_file)
-    clean_wave.setparams(clean_wav.getparams())
-    clean_wave.writeframes(array.array('h', clean_amp.astype(np.int16)).tostring() )
-    clean_wave.close()
-
-    noise_wave = wave.Wave_write(args.output_noise_file)
-    noise_wave.setparams(clean_wav.getparams())
-    noise_wave.writeframes(array.array('h', adjusted_noise_amp.astype(np.int16)).tostring() )
-    noise_wave.close()
+    save_waveform(args.output_noisy_file, clean_wav.getparams(), mixed_amp)
+    # save_waveform(args.output_clean_file, clean_wav, clean_amp)
+    # save_waveform(args.output_noise_file, clean_wav, noise_amp)
