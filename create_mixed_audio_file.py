@@ -10,9 +10,9 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--clean_file', type=str, required=True)
     parser.add_argument('--noise_file', type=str, required=True)
+    parser.add_argument('--output_mixed_file', type=str, default='', required=True)
     parser.add_argument('--output_clean_file', type=str, default='')
     parser.add_argument('--output_noise_file', type=str, default='')
-    parser.add_argument('--output_mixed_file', type=str, default='', required=True)
     parser.add_argument('--snr', type=float, default='', required=True)
     args = parser.parse_args()
     return args
