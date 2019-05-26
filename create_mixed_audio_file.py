@@ -42,7 +42,6 @@ if __name__ == '__main__':
 
     clean_file = args.clean_file
     noise_file = args.noise_file
-    snr = args.snr
 
     clean_wav = wave.open(clean_file, "r")
     noise_wav = wave.open(noise_file, "r")
@@ -55,6 +54,7 @@ if __name__ == '__main__':
     split_noise_amp = noise_amp[start: start + len(clean_amp)]
     noise_rms = cal_rms(split_noise_amp)
 
+    snr = args.snr
     adjusted_noise_rms = cal_adjusted_rms(clean_rms, snr)
     
     adjusted_noise_amp = split_noise_amp * (adjusted_noise_rms / noise_rms) 
