@@ -1,4 +1,4 @@
-# Mixing an audio file with a noise file at specific Signal-to-Noise Ratio
+# Mixing an audio file with a noise file at any Signal-to-Noise Ratio
 
 ## Installation
 - Python3.5
@@ -12,8 +12,16 @@
 - random
 - wave
 
+### File format
+To use this code, the format of source waveforms is as follows.
+
+- 16-bit PCM
+- 1 channel
+
+Additionally, the sampling rate of a clean file and that of noise file are supposed to be the same.
+
 ## Usage
-Example: `python3 create_noisy_minumum_code.py --clean_file ~/Desktop/test_source/arctic_b0001.wav --noise_file ~/Desktop/test_noise/0ch01.wav --output_clean_file ~/Desktop/clean.wav --output_noise_file ~/Desktop/noise.wav  --output_noisy_file ~/Desktop/noisy.wav --snr 0`
+Example: `python3 create_mixed_audio_file.py --clean_file data/source_clean/arctic_a0001.wav  --noise_file data/source_noise/ch01.wav --output_mixed_file data/output_mixed/0.wav --snr 0`
 
 ## Dataset
 - [Voices](http://festvox.org/cmu_arctic/)
