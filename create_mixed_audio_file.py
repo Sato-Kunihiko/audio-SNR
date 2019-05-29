@@ -33,7 +33,7 @@ def cal_rms(amp):
 
 def save_waveform(output_path, params, amp):
     output_file = wave.Wave_write(output_path)
-    output_file.setparams(params)
+    output_file.setparams(params) #nchannels, sampwidth, framerate, nframes, comptype, compname
     output_file.writeframes(array.array('h', amp.astype(np.int16)).tobytes() )
     output_file.close()
 
@@ -49,17 +49,19 @@ if __name__ == '__main__':
     clean_amp = cal_amp(clean_wav)
     noise_amp = cal_amp(noise_wav)
 
-    start = random.randint(0, len(noise_amp)-len(clean_amp))
     clean_rms = cal_rms(clean_amp)
-    split_noise_amp = noise_amp[start: start + len(clean_amp)]
-    noise_rms = cal_rms(split_noise_amp)
+
+    start = random.randint(0, len(noise_amp)-len(clean_amp))
+    divided_noise_amp = noise_amp[start: start + len(clean_amp)]
+    noise_rms = cal_rms(divided_noise_amp)
 
     snr = args.snr
     adjusted_noise_rms = cal_adjusted_rms(clean_rms, snr)
     
-    adjusted_noise_amp = split_noise_amp * (adjusted_noise_rms / noise_rms) 
+    adjusted_noise_amp = divided_noise_amp * (adjusted_noise_rms / noise_rms) 
     mixed_amp = (clean_amp + adjusted_noise_amp)
 
+    #Avoid clipping noise
     max_int16 = np.iinfo(np.int16).max 
     if  mixed_amp.max(axis=0) > max_int16:
         reduction_rate = max_int16 / mixed_amp.max(axis=0)
