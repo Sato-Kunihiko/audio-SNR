@@ -8,12 +8,12 @@ import wave
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--clean_file', type=str, required=True)
-    parser.add_argument('--noise_file', type=str, required=True)
-    parser.add_argument('--output_mixed_file', type=str, default='', required=True)
-    parser.add_argument('--output_clean_file', type=str, default='')
-    parser.add_argument('--output_noise_file', type=str, default='')
-    parser.add_argument('--snr', type=float, default='', required=True)
+    parser.add_argument('--clean_file', type=str, required=True, help="Absolute source path of clean audio file")
+    parser.add_argument('--noise_file', type=str, required=True, help="Absolute source path of noise audio file")
+    parser.add_argument('--output_mixed_file', type=str, default='', required=True, help="Absolute output path of mixed audio file")
+    parser.add_argument('--output_clean_file', type=str, default='', help="Absolute output path of clean audio file")
+    parser.add_argument('--output_noise_file', type=str, default='', help="Absolute output path of noise audio file")
+    parser.add_argument('--snr', type=float, default='', required=True, help="Signal to Noise Ratio you want")
     args = parser.parse_args()
     return args
 
