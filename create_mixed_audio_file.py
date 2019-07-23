@@ -6,21 +6,56 @@ import numpy as np
 import random
 import wave
 
+
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--clean_file', type=str, required=True, help="Absolute source path of clean audio file")
-    parser.add_argument('--noise_file', type=str, required=True, help="Absolute source path of noise audio file")
-    parser.add_argument('--output_mixed_file', type=str, default='', required=True, help="Absolute output path of mixed audio file")
-    parser.add_argument('--output_clean_file', type=str, default='', help="Absolute output path of clean audio file")
-    parser.add_argument('--output_noise_file', type=str, default='', help="Absolute output path of noise audio file")
-    parser.add_argument('--snr', type=float, default='', required=True, help="Signal to Noise Ratio you want")
+    parser.add_argument(
+        "--clean_file",
+        type=str,
+        required=True,
+        help="Absolute source path of clean audio file",
+    )
+    parser.add_argument(
+        "--noise_file",
+        type=str,
+        required=True,
+        help="Absolute source path of noise audio file",
+    )
+    parser.add_argument(
+        "--output_mixed_file",
+        type=str,
+        default="",
+        required=True,
+        help="Absolute output path of mixed audio file",
+    )
+    parser.add_argument(
+        "--output_clean_file",
+        type=str,
+        default="",
+        help="Absolute output path of clean audio file",
+    )
+    parser.add_argument(
+        "--output_noise_file",
+        type=str,
+        default="",
+        help="Absolute output path of noise audio file",
+    )
+    parser.add_argument(
+        "--snr",
+        type=float,
+        default="",
+        required=True,
+        help="Signal to Noise Ratio you want",
+    )
     args = parser.parse_args()
     return args
 
+
 def cal_adjusted_rms(clean_rms, snr):
     a = float(snr) / 20
-    noise_rms = clean_rms / (10**a) 
+    noise_rms = clean_rms / (10 ** a)
     return noise_rms
+
 
 def cal_amp(wf):
     buffer = wf.readframes(wf.getnframes())
@@ -28,16 +63,21 @@ def cal_amp(wf):
     amptitude = (np.frombuffer(buffer, dtype="int16")).astype(np.float64)
     return amptitude
 
+
 def cal_rms(amp):
     return np.sqrt(np.mean(np.square(amp), axis=-1))
 
+
 def save_waveform(output_path, params, amp):
     output_file = wave.Wave_write(output_path)
-    output_file.setparams(params) #nchannels, sampwidth, framerate, nframes, comptype, compname
-    output_file.writeframes(array.array('h', amp.astype(np.int16)).tobytes() )
+    output_file.setparams(
+        params
+    )  # nchannels, sampwidth, framerate, nframes, comptype, compname
+    output_file.writeframes(array.array("h", amp.astype(np.int16)).tobytes())
     output_file.close()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     args = get_args()
 
     clean_file = args.clean_file
@@ -51,19 +91,19 @@ if __name__ == '__main__':
 
     clean_rms = cal_rms(clean_amp)
 
-    start = random.randint(0, len(noise_amp)-len(clean_amp))
-    divided_noise_amp = noise_amp[start: start + len(clean_amp)]
+    start = random.randint(0, len(noise_amp) - len(clean_amp))
+    divided_noise_amp = noise_amp[start : start + len(clean_amp)]
     noise_rms = cal_rms(divided_noise_amp)
 
     snr = args.snr
     adjusted_noise_rms = cal_adjusted_rms(clean_rms, snr)
-    
-    adjusted_noise_amp = divided_noise_amp * (adjusted_noise_rms / noise_rms) 
-    mixed_amp = (clean_amp + adjusted_noise_amp)
 
-    #Avoid clipping noise
-    max_int16 = np.iinfo(np.int16).max 
-    if  mixed_amp.max(axis=0) > max_int16:
+    adjusted_noise_amp = divided_noise_amp * (adjusted_noise_rms / noise_rms)
+    mixed_amp = clean_amp + adjusted_noise_amp
+
+    # Avoid clipping noise
+    max_int16 = np.iinfo(np.int16).max
+    if mixed_amp.max(axis=0) > max_int16:
         reduction_rate = max_int16 / mixed_amp.max(axis=0)
         mixed_amp = mixed_amp * (reduction_rate)
 
