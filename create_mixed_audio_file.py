@@ -62,9 +62,14 @@ if __name__ == '__main__':
     mixed_amp = (clean_amp + adjusted_noise_amp)
 
     #Avoid clipping noise
-    max_int16 = np.iinfo(np.int16).max 
-    if  mixed_amp.max(axis=0) > max_int16:
-        reduction_rate = max_int16 / mixed_amp.max(axis=0)
+    max_int16 = np.iinfo(np.int16).max
+    min_int16 = np.iinfo(np.int16).min
+    if mixed_amp.max(axis=0) > max_int16 or mixed_amp.min(axis=0) < min_int16:
+        if mixed_amp.max(axis=0) >= abs(mixed_amp.min(axis=0)): 
+            reduction_rate = max_int16 / mixed_amp.max(axis=0)
+        else :
+            reduction_rate = min_int16 / mixed_amp.min(axis=0)
         mixed_amp = mixed_amp * (reduction_rate)
+        clean_amp = clean_amp * (reduction_rate)
 
     save_waveform(args.output_mixed_file, clean_wav.getparams(), mixed_amp)
