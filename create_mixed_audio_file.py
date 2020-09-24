@@ -5,6 +5,10 @@ import math
 import numpy as np
 import random
 import wave
+import librosa
+import soundfile as sf
+import os
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -42,8 +46,15 @@ if __name__ == '__main__':
 
     clean_file = args.clean_file
     noise_file = args.noise_file
-
-    clean_wav = wave.open(clean_file, "r")
+    
+    try:
+        clean_wav = wave.open(clean_file, "r")
+    except:
+        x,_ = librosa.load(clean_file, sr=16000)
+        sf.write('temp.wav', x, 16000)
+        clean_wav = wave.open("temp.wav", "r")
+        tempcount = 1
+            
     noise_wav = wave.open(noise_file, "r")
 
     clean_amp = cal_amp(clean_wav)
@@ -73,3 +84,8 @@ if __name__ == '__main__':
         clean_amp = clean_amp * (reduction_rate)
 
     save_waveform(args.output_mixed_file, clean_wav.getparams(), mixed_amp)
+    try:
+        if tempcount == 1:
+            os.remove("temp.wav")
+    except:
+        pass
