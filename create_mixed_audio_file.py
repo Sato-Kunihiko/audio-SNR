@@ -37,12 +37,7 @@ def save_waveform(output_path, params, amp):
     output_file.writeframes(array.array('h', amp.astype(np.int16)).tobytes() )
     output_file.close()
 
-if __name__ == '__main__':
-    args = get_args()
-
-    clean_file = args.clean_file
-    noise_file = args.noise_file
-
+def create_mixed_audio(clean_file, noise_file, output_mixed_file, snr):
     clean_wav = wave.open(clean_file, "r")
     noise_wav = wave.open(noise_file, "r")
 
@@ -55,7 +50,6 @@ if __name__ == '__main__':
     divided_noise_amp = noise_amp[start: start + len(clean_amp)]
     noise_rms = cal_rms(divided_noise_amp)
 
-    snr = args.snr
     adjusted_noise_rms = cal_adjusted_rms(clean_rms, snr)
     
     adjusted_noise_amp = divided_noise_amp * (adjusted_noise_rms / noise_rms) 
@@ -72,4 +66,14 @@ if __name__ == '__main__':
         mixed_amp = mixed_amp * (reduction_rate)
         clean_amp = clean_amp * (reduction_rate)
 
-    save_waveform(args.output_mixed_file, clean_wav.getparams(), mixed_amp)
+    save_waveform(output_mixed_file, clean_wav.getparams(), mixed_amp)
+
+if __name__ == '__main__':
+    args = get_args()
+
+    clean_file = args.clean_file
+    noise_file = args.noise_file
+    output_mixed_file = args.output_mixed_file
+    snr = args.snr
+
+    create_mixed_audio(clean_file, noise_file, output_mixed_file, snr)
