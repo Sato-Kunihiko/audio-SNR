@@ -7,6 +7,7 @@ verify_ssl = true
 
 [packages]
 librosa = "*"
+black = "*"
 
 [requires]
 python_version = "3.7"
