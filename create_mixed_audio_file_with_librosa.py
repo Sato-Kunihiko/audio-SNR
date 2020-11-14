@@ -8,6 +8,7 @@ import random
 import soundfile as sf
 from enum import Enum
 
+
 class EncodingType(Enum):
     def __new__(cls, *args, **kwds):
         value = len(cls.__members__) + 4
@@ -15,16 +16,37 @@ class EncodingType(Enum):
         obj._value_ = value
         return obj
 
-    def __init__(self, dtype, desc, subtype, maximum, minimum):
+    def __init__(self, dtype, description, subtype, maximum, minimum):
         self.dtype = dtype
-        self.desc = desc
+        self.description = description
         self.subtype = subtype
         self.maximum = maximum
         self.minimum = minimum
 
     # TODO: Attach link for dtype and subtype in soundfile
-    INT16 = "int16", "Signed 16 bit PCM", "PCM_16", np.iinfo(np.int16).max, np.iinfo(np.int16).min
-    FLOAT64 = "float64", "64 bit float",  "DOUBLE", np.finfo(np.float64).max, np.finfo(np.float64).min
+    INT8 = (
+        "int8",
+        "Signed 8 bit PCM",
+        "PCM_8",
+        np.iinfo(np.int8).max,
+        np.iinfo(np.int8).min,
+    )
+    INT16 = (
+        "int16",
+        "Signed 16 bit PCM",
+        "PCM_16",
+        np.iinfo(np.int16).max,
+        np.iinfo(np.int16).min,
+    )
+    INT32 = (
+        "int32",
+        "Signed 32 bit PCM",
+        "PCM_32",
+        np.iinfo(np.int32).max,
+        np.iinfo(np.int32).min,
+    )
+    FLOAT32 = ("float32", "32 bit float", "FLOAT", 1, -1)
+    FLOAT64 = ("float64", "64 bit float", "DOUBLE", 1, -1)
 
 
 def get_args():
@@ -50,10 +72,7 @@ def cal_rms(amp):
 
 
 def save_waveform(output_path, amp, samplerate, subtype):
-    sf.write(output_path, amp, samplerate, subtype=subtype)
-    metadata = sf.info(output_path)
-    print(metadata)
-    print(amp)
+    sf.write(output_path, amp, samplerate, format="wav", subtype=subtype)
 
 
 if __name__ == "__main__":
@@ -64,14 +83,11 @@ if __name__ == "__main__":
 
     metadata = sf.info(clean_file)
     for item in EncodingType:
-        if item.desc == metadata.subtype_info:
+        if item.description == metadata.subtype_info:
             encoding_type = item
 
-
-    # Set float64 to dtype to hadle amplitude value with various encoding method (16-bit Signed Integer PCM, 32-bit float, 64-bit float, etc...)
     clean_amp, clean_samplerate = sf.read(clean_file, dtype=encoding_type.dtype)
     noise_amp, noise_samplerate = sf.read(noise_file, dtype=encoding_type.dtype)
-    print(clean_amp[1000:1100])
 
     clean_rms = cal_rms(clean_amp)
 
@@ -84,14 +100,11 @@ if __name__ == "__main__":
 
     adjusted_noise_amp = divided_noise_amp * (adjusted_noise_rms / noise_rms)
     mixed_amp = clean_amp + adjusted_noise_amp
-    print(mixed_amp.max(axis=0))
 
     # Avoid clipping noise
     max_limit = encoding_type.maximum
     min_limit = encoding_type.minimum
-    print(max_limit, min_limit)
     if mixed_amp.max(axis=0) > max_limit or mixed_amp.min(axis=0) < min_limit:
-        print("over!")
         if mixed_amp.max(axis=0) >= abs(mixed_amp.min(axis=0)):
             reduction_rate = max_limit / mixed_amp.max(axis=0)
         else:
@@ -99,4 +112,7 @@ if __name__ == "__main__":
         mixed_amp = mixed_amp * (reduction_rate)
         clean_amp = clean_amp * (reduction_rate)
 
-    save_waveform(args.output_mixed_file, mixed_amp, clean_samplerate, encoding_type.subtype)
+    save_waveform(
+        args.output_mixed_file, mixed_amp, clean_samplerate, encoding_type.subtype
+    )
+    
