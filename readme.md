@@ -43,8 +43,8 @@ There are two files for creating a mixture.
   - Uses wave module
   - Can read wav file with 16-bit PCM only
 
-- `create_mixed_audio_file_with_librosa.py`:
-  - Uses librosa package and soundfile library
+- `create_mixed_audio_file_with_soundfile.py`:
+  - Uses soundfile library
   - Can read wav file with various encoding types such as 16-bit PCM, 32-bit PCM, 32-bit float, and 64-bit float. 
 
 After activating a virtualenv, you can run the files to mix an audio file with a noise file at any signal-to-noise ratio.
@@ -55,10 +55,10 @@ Example of `create_mixed_audio_file.py`:
 python create_mixed_audio_file.py --clean_file ~/workspace/audio-SNR/data/16_bit/source_clean/arctic_a0001.wav --noise_file ~/workspace/audio-SNR/data/16_bit/source_noise/ch01.wav --snr 0 --output_mixed_file ~/workspace/audio-SNR/data/16_bit/output_mixed/0dB.wav
 ```
 
-Example of `create_mixed_audio_file_with_librosa.py`:
+Example of `create_mixed_audio_file_with_soundfile.py`:
 
 ```
-python create_mixed_audio_file_with_librosa.py --clean_file ~/workspace/audio-SNR/data/64_bit/source_clean/arctic_a0001_64bit.wav --noise_file ~/workspace/audio-SNR/data/64_bit/source_noise/ch01_64bit.wav --snr 0 --output_mixed_file ~/workspace/audio-SNR/data/64_bit/output_mixed/0dB.wav
+python create_mixed_audio_file_with_soundfile.py --clean_file ~/workspace/audio-SNR/data/64_bit/source_clean/arctic_a0001_64bit.wav --noise_file ~/workspace/audio-SNR/data/64_bit/source_noise/ch01_64bit.wav --snr 0 --output_mixed_file ~/workspace/audio-SNR/data/64_bit/output_mixed/0dB.wav
 ```
 
 ## Dataset
