@@ -23,14 +23,8 @@ class EncodingType(Enum):
         self.maximum = maximum
         self.minimum = minimum
 
-    # TODO: Attach link for dtype and subtype in soundfile
-    INT8 = (
-        "int8",
-        "Signed 8 bit PCM",
-        "PCM_8",
-        np.iinfo(np.int8).max,
-        np.iinfo(np.int8).min,
-    )
+    # Available subtypes
+    # See. https://pysoundfile.readthedocs.io/en/latest/#soundfile.available_subtypes
     INT16 = (
         "int16",
         "Signed 16 bit PCM",
@@ -115,4 +109,3 @@ if __name__ == "__main__":
     save_waveform(
         args.output_mixed_file, mixed_amp, clean_samplerate, encoding_type.subtype
     )
-    

@@ -45,7 +45,7 @@ There are two files for creating a mixture.
 
 - `create_mixed_audio_file_with_librosa.py`:
   - Uses librosa package and soundfile library
-  - Can read wav file with various encoding type such as 16-bit PCM, 32-bit PCM, and 64-bit float. 
+  - Can read wav file with various encoding type such as 16-bit PCM, 32-bit PCM, 32-bit float, and 64-bit float. 
 
 After activating a virtualenv, you can run the files to mix an audio file with a noise file at any signal-to-noise ratio.
 
