@@ -1,5 +1,5 @@
 # Mixing an audio file with a noise file at any Signal-to-Noise Ratio
-The script `create_mixed_audio_file.py` can mix an audio file with a noise file at any Signal-to-Noise Ratio (SNR). 
+The script `create_mixed_audio_file.py` and `create_mixed_audio_file_with_soundfile.py` can mix an audio file with a noise file at any Signal-to-Noise Ratio (SNR). 
 
 You can listen to the results of [mixtures](/data/16_bit/output_mixed) of the [clean voice](data/16_bit/source_clean) and the [noise](data/16_bit/source_noise).
 
@@ -8,7 +8,7 @@ You can listen to the results of [mixtures](/data/16_bit/output_mixed) of the [c
 - macOS
 
 ### Setup
-I recommend to install [Pipenv](installation. https://github.com/pypa/pipenv) for making set-up easy before proceeding:
+I recommend to install [Pipenv](https://github.com/pypa/pipenv) for making set-up easy before proceeding:
 
 If you're on macOS, you can install Pipenv easily with Homebrew:
 
@@ -16,7 +16,7 @@ If you're on macOS, you can install Pipenv easily with Homebrew:
 $ brew install pipenv
 ```
 
-After installing Pipenv, you run the following command to build a virtualenv and install packages listed in Pipfile.lock.
+After installing Pipenv, you run the following command to build a virtualenv and install packages listed in `Pipfile.lock`.
 
 ```
 $ pipenv install
