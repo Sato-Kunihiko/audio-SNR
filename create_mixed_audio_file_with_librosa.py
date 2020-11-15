@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 import argparse
-import array
-import librosa
-import math
 import numpy as np
 import random
 import soundfile as sf
