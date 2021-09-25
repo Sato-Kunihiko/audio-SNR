@@ -5,7 +5,7 @@ import math
 import numpy as np
 import random
 import wave
-
+# how to add the arguments for different operations
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--clean_file', type=str, required=True)
@@ -16,7 +16,8 @@ def get_args():
     parser.add_argument('--snr', type=float, default='', required=True)
     args = parser.parse_args()
     return args
-
+#Is it possible to create Guassian noise and mixed it with clean?
+#Is it possible to mix several files by array with a loop?
 def cal_adjusted_rms(clean_rms, snr):
     a = float(snr) / 20
     noise_rms = clean_rms / (10**a) 
