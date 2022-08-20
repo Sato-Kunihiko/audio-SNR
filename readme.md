@@ -4,7 +4,7 @@ The script `create_mixed_audio_file.py` and `create_mixed_audio_file_with_soundf
 You can listen to the results of [mixtures](/data/16_bit/output_mixed) of the [clean voice](data/16_bit/source_clean) and the [noise](data/16_bit/source_noise).
 
 ## Installation
-- Python3.5+
+- Python3.7+
 - macOS
 
 ### Setup
