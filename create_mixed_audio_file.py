@@ -29,6 +29,7 @@ def cal_amp(wf):
     return amptitude
 
 def cal_rms(amp):
+    amp = np.trim_zeros(amp)  # to remove leading and trailing zeros (representing silence in the audio beginning/end)
     return np.sqrt(np.mean(np.square(amp), axis=-1))
 
 def save_waveform(output_path, params, amp):
